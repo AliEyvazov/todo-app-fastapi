@@ -77,3 +77,14 @@ def update_todo(id: int, new_todo: schemas.TodoCreate ,db: Session = Depends(get
     db.commit()
     db.refresh(todo)
     return todo
+@app.post("/login")
+def login(user_credentials: schemas.UserLogin, db: Session = Depends(get_db)):
+    user = db.query(models.UserDB).filter(models.UserDB.email == user_credentials.email).first()
+    if not user or not security.verify_password(user_credentials.password, user.hashed_password):
+        raise HTPPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Email və ya parol səhvdir"
+        )
+    access_token = security.create_access_token(data={"sub": user.email})
+    
+    return {"access_token": access_token, "token_type": "bearer"}
