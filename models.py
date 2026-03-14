@@ -1,5 +1,6 @@
 from database import Base 
-from sqlalchemy import String, Integer, Column, Boolean
+from sqlalchemy import String, Integer, Column, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
 class UserDB(Base):
     __tablename__ = "users"
 
@@ -7,6 +8,7 @@ class UserDB(Base):
     email = Column(String, unique=True , index=True)
     hashed_password = Column(Integer)
     is_active = Column(Boolean, default=True)
+    todos = relationship("TodoDB", back_populates = "owner")
 
 class TodoDB(Base):
     __tablename__ = "todos"
@@ -15,3 +17,5 @@ class TodoDB(Base):
     title = Column(String, index=True)
     description = Column(String, index=True)
     done = Column(Boolean, default=False)
+    owner_id = Column(Integer, ForeignKey("users.id"))
+    owner = relationship("UserDB", back_populates = "todos")
