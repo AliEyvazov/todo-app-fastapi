@@ -20,7 +20,11 @@ class TodoResponse(BaseModel):
     title: str 
     description: Optional[str]= None
     done: bool
-
+class TodoUpdate(BaseModel):
+    title: str
+    description: Optional[str]= None
+    done: bool
+   
     class Config:
         orm_mode= True
 

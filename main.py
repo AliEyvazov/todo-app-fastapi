@@ -117,3 +117,57 @@ def create_todo(
     db.refresh(new_todo)
 
     return new_todo
+@app.get("/todos")
+def get_todo(
+    token: str = Depends(security.oauth2_scheme),
+    db: Session = Depends(get_db)
+):
+
+    email = security.verify_token(token)
+    user = db.query(models.UserDB).filter(models.UserDB.email == email).first()
+    todos = db.query(models.TodoDB).filter(models.TodoDB.owner_id == user.id).all()
+
+    return todos
+@app.delete("/todos/{todo_id}")
+def delete_todo(
+    todo_id: int,
+    token: str = Depends(security.oauth2_scheme),
+    db: Session = Depends(get_db)
+):
+
+    email = security.verify_token(token)
+    user = db.query(models.UserDB).filter(models.UserDB.email == email).first()
+    todo = db.query(models.TodoDB).filter(models.TodoDB.id == todo_id, models.TodoDB.owner_id == user.id).first()
+
+    if todo is None:
+        raise HTTPException(
+            status_code = status.HTTP_404_NOT_FOUND,
+            detail = "Tapşırıq tapılmadı və ya bu tapşırığı silməyə icazəniz yoxdur"
+        )
+    
+    db.delete(todo)
+    db.commit()
+    return {"mesaj": f"{todo_id} nömrəli tapşırıq uğurla silindi!"}
+@app.put("/todos/{todo_id}")
+def update_todo(
+    todo_id: str,
+    todo_update: schemas.TodoUpdate,
+    token: str = Depends(security.oauth2_scheme),
+    db: Session = Depends(get_db)
+):
+
+    email = security.verify_token(token)
+    user = db.query(models.UserDB).filter(models.UserDB.email == email).first()
+    todo = db.query(models.TodoDB).filter(models.TodoDB.id == todo_id, models.TodoDB.owner_id == user.id).first()
+    if todo is None:
+        raise HTTPException(
+            status_code = status.HTTP_404_NOT_FOUND,
+            detail = "Tapşırıq tapılmadı və ya bu tapşırığı yeniləməyə icazəniz yoxdur"
+        )
+    todo.title = todo_update.title
+    todo.description = todo_update.description
+    todo.done = todo_update.done
+
+    db.commit()
+    db.refresh(todo)
+    return todo
