@@ -2,3 +2,4 @@ venv/
 todo.db
 __pycache__/
 .env
+alembic.ini
