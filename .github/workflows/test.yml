@@ -1,0 +1,26 @@
+name: Avtomatik Testler
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test-et:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 1. Kodları GitHub-dan kopyala
+      uses: actions/checkout@v3
+
+    - name: 2. Python mühitini qur
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.14"
+    
+    - name: 3. Lazımi kitabxanaları (FastAPI, Pytest və s.) yüklə
+      run: |
+        pip install -r requirements.txt
+    
+    - name: 4. Testləri (Pytest) işə sal!
+      run: |
+        pytest -p no:warnings

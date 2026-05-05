@@ -10,6 +10,9 @@ from database import engine, SessionLocal
 #models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+@app.get("/")
+def health_check():
+    return {"mesaj": "API tam qaydasinda isleyir"}
 
 def get_db() :
     db = SessionLocal()
