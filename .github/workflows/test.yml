@@ -30,3 +30,11 @@ jobs:
         SECRET_KEY: "1Key"
       run: |
         python3 -m pytest -p no:warnings
+
+  deploy-et:
+    needs: test-et
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Render-ə yenilənmə siqnalı göndər
+      run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
