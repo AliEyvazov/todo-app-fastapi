@@ -1,9 +1,11 @@
-name: Avtomatik Testler
+name: Avtomatik Testler (CI)
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
   test-et:
     runs-on: ubuntu-latest
@@ -15,12 +17,16 @@ jobs:
     - name: 2. Python mühitini qur
       uses: actions/setup-python@v4
       with:
-        python-version: "3.14"
-    
-    - name: 3. Lazımi kitabxanaları (FastAPI, Pytest və s.) yüklə
+        python-version: "3.10" # Bura öz versiyanı yaz (məsələn 3.12)
+
+    - name: 3. Kitabxanaları yüklə və Yoxla
       run: |
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
-    
-    - name: 4. Testləri (Pytest) işə sal!
+        # Bura bir yoxlama əmri əlavə edirik ki, yüklənib-yüklənmədiyini görək
+        pip list
+
+    - name: 4. Testləri işə sal!
       run: |
-        python -m pytest -p no:warnings
+        # Bu format ən etibarlı yoldur
+        python3 -m pytest -p no:warnings
