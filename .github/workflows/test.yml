@@ -23,4 +23,4 @@ jobs:
     
     - name: 4. Testləri (Pytest) işə sal!
       run: |
-        pytest -p no:warnings
+        python -m pytest -p no:warnings
