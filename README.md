@@ -22,21 +22,21 @@ Layihəni lokal mühitdə işə salmaq üçün aşağıdakı addımları izləyi
 
 1. **Repozitoriyanı klonlayın:**
    ```bash
-   git clone [https://github.com/AliEyvazov/todo-app-fastapi.git](https://github.com/AliEyvazov/todo-app-fastapi.git)
+   git clone https://github.com/AliEyvazov/todo-app-fastapi.git
    cd todo-app-fastapi
 
-2. Virtual mühit yaradın və aktivləşdirin:
+2. **Virtual mühit yaradın və aktivləşdirin**:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Windows: venv\Scripts\activate
 
-  python -m venv venv
-  source venv/bin/activate  # Windows: venv\Scripts\activate
+3. **Asılılıqları yükləyin**:
+   ```bash
+   pip install -r requirements.txt
 
-3. Asılılıqları yükləyin:
-
-  pip install -r requirements.txt
-
-4. Serveri işə salın:
-
-  uvicorn main:main:app --reload
+4. **Serveri işə salın**:
+   ```bash
+   uvicorn main:main:app --reload
 
 http://127.0.0.1:8000/docs
 
