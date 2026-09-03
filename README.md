@@ -38,5 +38,7 @@ Layihəni lokal mühitdə işə salmaq üçün aşağıdakı addımları izləyi
 
   uvicorn main:main:app --reload
 
+http://127.0.0.1:8000/docs
+
 ## Müəllif
 [AliEyvazov](https://github.com/AliEyvazov)
